@@ -1,8 +1,8 @@
 from fastsam import FastSAM, FastSAMPrompt
 import torch 
 
-model = FastSAM('FastSAM.pt')
-IMAGE_PATH = './images/dogs.jpg'
+model = FastSAM('FastSAM-x.pt')
+IMAGE_PATH = './images/8531607.700x525.jpg'
 DEVICE = torch.device(
     "cuda"
     if torch.cuda.is_available()
@@ -15,7 +15,7 @@ everything_results = model(
     device=DEVICE,
     retina_masks=True,
     imgsz=1024,
-    conf=0.4,
+    conf=0.3,
     iou=0.9,
 )
 prompt_process = FastSAMPrompt(IMAGE_PATH, everything_results, device=DEVICE)
@@ -40,11 +40,11 @@ ann = prompt_process.everything_prompt()
 # point prompt
 # points default [[0,0]] [[x1,y1],[x2,y2]]
 # point_label default [0] [1,0] 0:background, 1:foreground
-ann = prompt_process.point_prompt(points=[[620, 360]], pointlabel=[1])
+# ann = prompt_process.point_prompt(points=[[620, 360]], pointlabel=[1])
 
 prompt_process.plot(
     annotations=ann,
-    output='./output/',
+    output_path='./output/test_output.jpg',
     mask_random_color=True,
     better_quality=True,
     retina=False,
